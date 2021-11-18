@@ -6,7 +6,7 @@
 /*   By: rmonney <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 13:51:32 by rmonney           #+#    #+#             */
-/*   Updated: 2021/11/18 14:27:41 by rmonney          ###   ########.fr       */
+/*   Updated: 2021/11/18 14:45:51 by rmonney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -57,7 +57,30 @@ char	*getline(char *save)
 	return (line);
 }
 
-AAA
+char	*rest(char *save)
+{
+	int		a;
+	int		b;
+	char	*str;
+
+	a = 0;
+	b = 0;
+	while (save[a] != '\0' && save[a] != '\n')
+		a++;
+	if (save[a] == '\0')
+	{
+		free(save);
+		return (NULL);
+	}
+	str = malloc(sizeof(char) * ft_strlen(save) - a + 1);
+	if (!str)
+		return (NULL);
+	a++;
+	while (save[a] != '\0')
+		str[b++] = save[a++];
+	str[b] = '\0';
+	return (str);
+}
 
 char	*get_next_line(int fd)
 {
