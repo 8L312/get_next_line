@@ -6,7 +6,7 @@
 /*   By: rmonney <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 13:51:32 by rmonney           #+#    #+#             */
-/*   Updated: 2021/11/18 14:59:59 by rmonney          ###   ########.fr       */
+/*   Updated: 2021/11/18 15:59:28 by rmonney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -35,7 +35,7 @@ char	*readsave(int fd, char *save)
 	return (save);
 }
 
-char	*getline(char *save)
+char	*get_line(char *save)
 {
 	char	*line;
 	int		i;
@@ -91,7 +91,7 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	save = readsave(fd, save);
-	line = getline(save);
+	line = get_line(save);
 	save = rest(save);
 	return (line);
 }
