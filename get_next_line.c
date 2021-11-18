@@ -6,7 +6,7 @@
 /*   By: rmonney <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 13:51:32 by rmonney           #+#    #+#             */
-/*   Updated: 2021/11/18 15:59:28 by rmonney          ###   ########.fr       */
+/*   Updated: 2021/11/18 21:15:30 by rmonney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -90,6 +90,8 @@ char	*get_next_line(int fd)
 	static char	*save;
 	char		*line;
 
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	save = readsave(fd, save);
 	line = get_line(save);
 	save = rest(save);
