@@ -6,12 +6,12 @@
 /*   By: rmonney <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 13:53:45 by rmonney           #+#    #+#             */
-/*   Updated: 2021/11/18 13:21:49 by rmonney          ###   ########.fr       */
+/*   Updated: 2021/11/18 23:00:09 by rmonney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *str)
+size_t	ft_strlen(char *str)
 {
 	unsigned long	n;
 
@@ -21,47 +21,45 @@ size_t	ft_strlen(const char *str)
 	return (n);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *save, char *buff)
 {
 	char			*str;
-	unsigned long	i;
 	int				a;
 	int				b;
 
-	a = 0;
+	a = -1;
 	b = 0;
-	if (!s1 || !s2)
+	if (!save)
+	{
+		save = malloc(sizeof(char) * 1);
+		save[0] = '\0';
+	}
+	if (!save || !buff)
 		return (NULL);
-	i = ft_strlen(s1) + ft_strlen(s2);
-	str = malloc(sizeof(char) * i + 1);
+	str = malloc(sizeof(char) * (ft_strlen(save) + ft_strlen(buff)) + 1);
 	if (!str)
 		return (NULL);
-	while (s1[a] != '\0')
-	{
-		str[a] = s1[a];
-		a++;
-	}
-	while (s2[b] != '\0')
-		str[a++] = s2[b++];
-	str[a] = '\0';
+	if (save)
+		while (save[++a] != '\0')
+			str[a] = save[a];
+	while (buff[b] != '\0')
+		str[a++] = buff[b++];
+	str[ft_strlen(save) + ft_strlen(buff)] = '\0';
+	free(save);
 	return (str);
 }
 
-char	*ft_strchr(const char *s, int c)
+int	ft_strchr(char *s, int c)
 {
-	char	i;
-	int		a;
-	char	*sc;
+	int	a;
 
-	i = 0;
 	a = 0;
-	sc = NULL;
-	i = (char)c;
-	sc = (char *)s;
-	while (sc[a] != i && sc[a] != '\0')
+	if (!s)
+		return (0);
+	while (s[a] != c && s[a] != '\0')
 		a++;
-	if (sc[a] == '\0' && c != '\0')
-		return (NULL);
+	if (s[a] == '\0' && c != '\0')
+		return (0);
 	else
-		return (&sc[a]);
+		return (1);
 }

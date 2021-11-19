@@ -6,7 +6,7 @@
 /*   By: rmonney <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 13:51:32 by rmonney           #+#    #+#             */
-/*   Updated: 2021/11/18 21:15:30 by rmonney          ###   ########.fr       */
+/*   Updated: 2021/11/18 22:47:09 by rmonney          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -16,13 +16,13 @@ char	*readsave(int fd, char *save)
 	char	*buff;
 	int		ret;
 
-	buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	buff = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buff)
 		return (NULL);
 	ret = 1;
 	while (!(ft_strchr(save, '\n')) && ret != 0)
 	{
-		ret = (read(fd, buff, BUFFER_SIZE));
+		ret = read(fd, buff, BUFFER_SIZE);
 		if (ret == -1)
 		{
 			free(buff);
@@ -41,11 +41,11 @@ char	*get_line(char *save)
 	int		i;
 
 	i = 0;
-	if (!save)
+	if (!save[i])
 		return (NULL);
 	while (save[i] != '\0' && save[i] != '\n')
 		i++;
-	line = malloc(sizeof(char) * (i + 2));
+	line = (char *)malloc(sizeof(char) * (i + 2));
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -54,8 +54,11 @@ char	*get_line(char *save)
 		line[i] = save[i];
 		i++;
 	}
-	if (save[i++] == '\n')
+	if (save[i] == '\n')
+	{
 		line[i] = save[i];
+		i++;
+	}
 	line[i] = '\0';
 	return (line);
 }
@@ -75,13 +78,14 @@ char	*rest(char *save)
 		free(save);
 		return (NULL);
 	}
-	str = malloc(sizeof(char) * ft_strlen(save) - a + 1);
+	str = (char *)malloc(sizeof(char) * ft_strlen(save) - a + 1);
 	if (!str)
 		return (NULL);
 	a++;
 	while (save[a] != '\0')
 		str[b++] = save[a++];
 	str[b] = '\0';
+	free(save);
 	return (str);
 }
 
@@ -93,6 +97,8 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	save = readsave(fd, save);
+	if (!save)
+		return (NULL);
 	line = get_line(save);
 	save = rest(save);
 	return (line);
